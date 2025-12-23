@@ -1,0 +1,8 @@
+requests
+isort
+black
+ruff
+pytest
+pre-commit
+pillow
+numpy
