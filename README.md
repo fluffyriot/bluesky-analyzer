@@ -2,4 +2,4 @@
 
 ## This is just a beginning!
 
-Fluffy Riot# bluesky-analyzer
+Fluffy Riot

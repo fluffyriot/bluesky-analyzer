@@ -14,10 +14,10 @@ class UserProfile:
     def __repr__(self):
         return f"""Profile for @{self.handle}
 
-User did: {self.did}
-User name: {self.display_name}
-User joined date: {self.joined_date}
-User posted: {self.posts_count}
+User DID: {self.did}
+User Display Name: {self.display_name}
+User Joined Date: {self.joined_date}
+User posts: {self.posts_count}
 User followers / follows: {self.followers_count} / {self.follows_count}
 
 This is them (well... kinda... :D ):

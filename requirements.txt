@@ -6,3 +6,4 @@ pytest
 pre-commit
 pillow
 numpy
+dateutil

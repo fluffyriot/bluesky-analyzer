@@ -4,7 +4,7 @@ from PIL import Image,ImageFilter,ImageOps,ImageEnhance
 from io import BytesIO
 from models.bsky_user import UserProfile
 
-def fetch_user_profile (user_name):
+def fetch_user_profile (user_name, gen_avatar):
 
     url = f"https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor={user_name}"
     try:
@@ -30,7 +30,7 @@ def fetch_user_profile (user_name):
         joined_date = response.get('createdAt', None)
     )
     
-    if (fetched.avatar_url != None):
+    if (fetched.avatar_url != None and gen_avatar):
         fetched.avatar_string = get_terminal_avatar(response.get('avatar', None), width=32)
 
     return fetched

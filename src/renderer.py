@@ -3,7 +3,10 @@ from models.bsky_user import UserProfile
 
 def render_profile(profile = UserProfile, width = 76):
     
-    lines = profile.avatar_string.split('\n')
+    if profile.avatar_string != None:
+        lines = profile.avatar_string.split('\n')
+    else:
+        lines = []
 
     inner = width - 4
     fields = [
