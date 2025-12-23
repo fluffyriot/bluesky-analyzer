@@ -2,7 +2,7 @@ from datetime import timezone
 
 class SocialMediaPost:
 
-    def __init__(self, uri, author_handle, record_type, post_date, embed_type, content, bookmark_count, reply_count, reposts_count, like_count, quote_count):
+    def __init__(self, uri, author_handle, record_type, post_date, embed_type, content, bookmark_count, reply_count, reposts_count, like_count, quote_count, interactions_count):
         self.uri = uri
         self.author_handle = author_handle
         self.record_type = record_type
@@ -14,10 +14,13 @@ class SocialMediaPost:
         self.reposts_count = reposts_count
         self.like_count = like_count
         self.quote_count = quote_count
-        self.interactions_count = 0
+        self.interactions_count = interactions_count
 
     def update_interactions(self):
         self.interactions_count = self.quote_count + self.like_count + self.reposts_count + self.reply_count + self.bookmark_count
+
+    def get_url(self):
+        return f"https://bsky.app/profile/{self.author_handle}/post/{self.uri}"
 
     def to_dict(self) -> dict:
         return {
@@ -31,6 +34,7 @@ class SocialMediaPost:
             "reply_count": self.reply_count,
             "reposts_count": self.reposts_count,
             "like_count": self.like_count,
-            "quote_count": self.quote_count
+            "quote_count": self.quote_count,
+            "interactions_count": self.interactions_count
         }
 

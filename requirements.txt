@@ -7,3 +7,4 @@ pre-commit
 pillow
 numpy
 dateutil
+tabulate

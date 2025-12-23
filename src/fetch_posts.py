@@ -82,14 +82,20 @@ def format_posts_to_class(response_array, original_username, period_string):
     
     period = convert_period(period_string)
 
+    deduplication_set = set()
+
     formatted_set = []
 
     for item in response_array:
         
         created_formatted = datetime.fromisoformat(item["post"]["record"]["createdAt"].replace("Z", "+00:00"))
 
-        if post_in_period_check(created_formatted, period):  
-            
+        id = item["post"]["uri"].split('/')[-1]
+
+        if post_in_period_check(created_formatted, period) and (id not in deduplication_set):  
+
+            deduplication_set.add(id)
+
             if 'embed' in item["post"]["record"]:
                 if '$type' in item["post"]["record"]['embed']:
                     embed_type = convert_embed_type(item["post"]["record"]['embed']['$type'])
@@ -109,7 +115,7 @@ def format_posts_to_class(response_array, original_username, period_string):
                 record_type = "Post"
             
             formatted_post = SocialMediaPost(
-                uri = item["post"]["uri"].split('/')[-1],
+                uri = id,
                 author_handle = item["post"]["author"]["handle"],
                 record_type = record_type,
                 post_date = created_formatted,
@@ -119,7 +125,8 @@ def format_posts_to_class(response_array, original_username, period_string):
                 reply_count = item["post"]["replyCount"],
                 reposts_count = item["post"]["repostCount"],
                 like_count = item["post"]["likeCount"],
-                quote_count = item["post"]["quoteCount"]
+                quote_count = item["post"]["quoteCount"],
+                interactions_count = 0
                 )
             
             formatted_post.update_interactions()

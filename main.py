@@ -1,15 +1,26 @@
 from src import fetch_user_profile
 from src import render_profile
 from src import fetch_posts_from_bsky
+from src import format_posts_list
+from src import get_top_10_posts
+from tabulate import tabulate
 import json
 
 if __name__ == "__main__":
-    # profile = fetch_user_profile(user_name="riot.photos", gen_avatar=False)
-    # print(render_profile(profile))
     
-    test = fetch_posts_from_bsky("riot.photos","P2Y1M0DT0H0M0S")
+    posts = fetch_posts_from_bsky("fluffyriot.com","P1Y0M0DT0H0M0S")
+    posts = get_top_10_posts(posts)
+    profile = fetch_user_profile(user_name="fluffyriot.com", gen_avatar=True)
+    formatted_posts = format_posts_list(posts)
+    print(render_profile(profile))
 
-    with open("output.json", "w", encoding="utf-8") as f:
-        json.dump([post.to_dict() for post in test], f, ensure_ascii=False)
+    print("\n\nYour top posts within last year:\n\n")
+    
+    print(tabulate(
+        formatted_posts,
+        headers=["Post Link", "Post Content", "Likes", "Interactions"],
+        tablefmt="github",
+        colalign=("left", "left", "right", "right"),
+        ))  
 
-    print("test finished")
+    print("\n\n")
