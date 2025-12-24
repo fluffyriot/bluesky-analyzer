@@ -11,7 +11,7 @@ I'm going to continue developing it, but at this moment it can:
 
 ## Getting started
 
-1. Ensure (make)[https://www.gnu.org/software/make/] is installed.
+1. Ensure [make](https://www.gnu.org/software/make/) is installed.
 2. Download the whole project
 3. Create a new **config.json** in the following format you can copy below:
 ```
@@ -26,7 +26,7 @@ I'm going to continue developing it, but at this moment it can:
     "get_mentions": true
 }
 ```
-4. In your terminal switch to the downloaded folder
-5. Run ```venv venv -m```
-6. Run ```make```
-7. Run ```python3 main.py```
+1. In your terminal switch to the downloaded folder
+2. Run ```venv venv -m```
+3. Run ```make```
+4. Run ```python3 main.py```
