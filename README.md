@@ -13,17 +13,17 @@ I'm going to continue developing it, but at this moment it can:
 
 1. Ensure ```[make](https://www.gnu.org/software/make/)``` is installed.
 2. Download the whole project
-3. Create a new **config.json** in the following format you can copy:
+3. Create a new **config.json** in the following format you can copy below:
 ```
 {
-    "bsky_username": "fluffyriot.com", // your Bluesky handle
-    "fetch_periond": "P0Y3M0DT0H0M0S", // fetch period for posts
-    "get_posts": true, // check if you want to get posts for analysis
-    "get_top_posts": true, // check if you want to print a list of top 10 posts (only works with get_posts set to true)
-    "gen_avatar": true, // check if you want to print terminal representation of your avatar
-    "get_profile": true, // check if you want to print details of your profile
-    "get_hashtags": true, // check if you want to print a list of top hashtags (only works with get_posts set to true)
-    "get_mentions": true // check if you want to print a list of top mentions (only works with get_posts set to true)
+    "bsky_username": "fluffyriot.com",
+    "fetch_periond": "P0Y3M0DT0H0M0S",
+    "get_posts": true,
+    "get_top_posts": true,
+    "gen_avatar": true,
+    "get_profile": true,
+    "get_hashtags": true,
+    "get_mentions": true
 }
 ```
 4. In your terminal switch to the downloaded folder

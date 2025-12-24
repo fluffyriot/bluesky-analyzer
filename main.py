@@ -7,12 +7,13 @@ from src import render_period_string
 from src import top_hashtags
 from src import format_hashtag_lists
 from src import top_mentions
+from src import check_config_file
 from tabulate import tabulate
-import json
 from pathlib import Path
+import json
 
-if __name__ == "__main__":
-    
+def __main__():
+
     print("\n\n\n======================")
     print("\nWelcome to your Bluesky profile summary!\n")
     print("======================\n\n\n")
@@ -21,11 +22,22 @@ if __name__ == "__main__":
     
     root_dir = Path.cwd()
     json_path = root_dir / "config.json"
-    
-    with json_path.open("r", encoding="utf-8") as f:
-        data = json.load(f) 
+    try:
+        with json_path.open("r", encoding="utf-8") as f:
+            data = json.load(f) 
 
-    print("Configuration loaded!\n\n\n")
+        print("Configuration file loaded!\n")
+    except:
+        print("\nConfiguration file not found!\nPlease refer to the README.md for the setup instruction!")
+        return
+
+    config_check = check_config_file(data)
+
+    if config_check[0]:
+        print("Configuration file is correct!\n")
+    else:
+        print(f"Configuration file is missing required field(s) ({config_check[1]})!\nProgram will be terninated now.\nPlease refer to the README.md for the setup instruction!")
+        return
 
     if data['get_profile']:
         if data['gen_avatar']:
@@ -40,10 +52,10 @@ if __name__ == "__main__":
 
     if data['get_posts']:
         
-        period_string = render_period_string(data['fetch_periond'])
+        period_string = render_period_string(data['fetch_period'])
         
         print(f"Fetching @{data['bsky_username']}'s posts for the period of {period_string}...\n")
-        posts = fetch_posts_from_bsky(data['bsky_username'],data['fetch_periond'])
+        posts = fetch_posts_from_bsky(data['bsky_username'],data['fetch_period'])
         print(f"Posts fetched!\n\n\n")
         
     if data['get_posts'] and data['get_top_posts']:
@@ -126,6 +138,11 @@ if __name__ == "__main__":
             
             
         else:
-            print(f"No posts with hashtags found within this period.")
+            print(f"No posts with mentions found within this period.")
 
         print("\n\n")
+
+
+if __name__ == "__main__":
+    
+    __main__()

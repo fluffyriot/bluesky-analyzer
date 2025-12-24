@@ -8,6 +8,7 @@ from src.posts_stats import top_hashtags
 from src.renderer import render_period_string
 from src.renderer import format_hashtag_lists
 from src.posts_stats import top_mentions
+from src.helper import check_config_file
 
 __all__ = [
     "fetch_user_profile",
@@ -19,5 +20,6 @@ __all__ = [
     "top_hashtags",
     "render_period_string",
     "format_hashtag_lists",
-    "top_mentions"
+    "top_mentions",
+    "check_config_file"
     ]

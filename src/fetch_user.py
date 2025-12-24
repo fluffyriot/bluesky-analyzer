@@ -7,6 +7,7 @@ from models.bsky_user import UserProfile
 def fetch_user_profile (user_name, gen_avatar):
 
     url = f"https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor={user_name}"
+    
     try:
         response = requests.get(url)
         response.raise_for_status()
