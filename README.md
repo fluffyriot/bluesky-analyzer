@@ -11,7 +11,7 @@ I'm going to continue developing it, but at this moment it can:
 
 ## Getting started
 
-1. Ensure ```[make](https://www.gnu.org/software/make/)``` is installed.
+1. Ensure (make)[https://www.gnu.org/software/make/] is installed.
 2. Download the whole project
 3. Create a new **config.json** in the following format you can copy below:
 ```
