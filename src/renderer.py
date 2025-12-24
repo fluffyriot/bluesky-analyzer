@@ -20,6 +20,35 @@ EMOJI_PATTERN = re.compile(
     flags=re.UNICODE
 )
 
+def render_period_string(period):
+    
+    pattern = re.compile(
+        r"P"
+        r"(?:(\d+)Y)?"
+        r"(?:(\d+)M)?"
+        r"(?:(\d+)D)?"
+        r"(?:T"
+        r"(?:(\d+)H)?"
+        r"(?:(\d+)M)?"
+        r"(?:(\d+)S)?"
+        r")?$"
+        )
+
+    match = pattern.fullmatch(period)
+    if not match:
+        raise ValueError(f"Invalid ISO-8601 duration: {period}")
+
+    values = [int(v) if v else 0 for v in match.groups()]
+    labels = ["year", "month", "day", "hour", "minute", "second"]
+
+    parts = [
+        f"{value} {label}{'' if value == 1 else 's'}"
+        for value, label in zip(values, labels)
+        if value
+    ]
+
+    return ", ".join(parts) if parts else "0 seconds"
+
 def strip_emojis(text):
     return EMOJI_PATTERN.sub(" [] ", text)
 
@@ -31,6 +60,13 @@ def format_posts_list(posts):
         content_upd = f"{strip_emojis(post.content.replace("\n"," "))[:47]}..."
         return_table.append((post_url, content_upd, post.like_count, post.interactions_count))
 
+    return return_table
+
+def format_hashtag_lists(hashtag_stats):
+    return_table = []
+    for hash,value in hashtag_stats.items():
+        return_table.append((hash,value))
+    
     return return_table
 
 def render_profile(profile = UserProfile, width = 76):

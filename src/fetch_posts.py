@@ -1,5 +1,6 @@
 import requests
-from models.bsky_post import SocialMediaPost
+from models import SocialMediaPost
+from models import UserTimeline
 from datetime import datetime, timezone
 from dateutil.relativedelta import relativedelta
 import re
@@ -58,29 +59,33 @@ def convert_embed_type(type_string):
 
 def fetch_posts_from_bsky(bsky_username, period):
     
-    url = f"https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor={bsky_username}&limit=100"
+    period_conv = convert_period(period)
 
+    url = f"https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor={bsky_username}&limit=100"
     response_set = []
 
     try:
         response = requests.get(url)
         response.raise_for_status()
         response_set += response.json()["feed"]
+        last_post_created = datetime.fromisoformat(response.json()["feed"][-1]["post"]["record"]["createdAt"].replace("Z", "+00:00"))
         
         while "cursor" in response.json():
-            response = requests.get(url+"&cursor="+ response.json()["cursor"])
-            response.raise_for_status()
-            response_set += response.json()["feed"]
+            if post_in_period_check(last_post_created, period_conv):
+                response = requests.get(url+"&cursor="+ response.json()["cursor"])
+                response.raise_for_status()
+                response_set += response.json()["feed"]
+                last_post_created = datetime.fromisoformat(response.json()["feed"][-1]["post"]["record"]["createdAt"].replace("Z", "+00:00"))
+            else:
+                break
     
     except requests.exceptions.RequestException as e:
         print(f"Error fetching Bluesky data: {e}\nEmpty data will be returned.")
         return response_set
     
-    return format_posts_to_class(response_array=response_set, original_username=bsky_username, period_string=period)
+    return format_posts_to_class(response_array=response_set, original_username=bsky_username, period=period_conv)
     
-def format_posts_to_class(response_array, original_username, period_string):
-    
-    period = convert_period(period_string)
+def format_posts_to_class(response_array, original_username, period):
 
     deduplication_set = set()
 
@@ -134,3 +139,16 @@ def format_posts_to_class(response_array, original_username, period_string):
             formatted_set.append(formatted_post)
 
     return formatted_set
+
+def generate_timeline(user, posts):
+
+    timeline = UserTimeline(user, {})
+
+    updated_dict = {}
+
+    for post in posts:
+        updated_dict[post.uri] = post
+    
+    timeline.posts = updated_dict
+
+    return timeline
